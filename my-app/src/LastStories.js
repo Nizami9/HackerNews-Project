@@ -1,23 +1,24 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
-import NewsCard from "./components/NewsCard";
+import LastStoriesCard from "./components/LastSroriesCard";
 import Navbar from "./Navbar";
 
-function NewsPage() {
-  const [articles, setArticles] = useState([]);
+
+function LastStories() {
+  const [stories, setStories] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalStories, setTotalStories] = useState(0);
 
   useEffect(() => {
     setIsLoading(true);
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
-          "http://hn.algolia.com/api/v1/search?"
+          "http://hn.algolia.com/api/v1/search?query=foo&tags=story"
         );
         const { hits, nbpages } = data;
-        setArticles(hits);
-        setTotalPages(nbpages);
+        setStories(hits);
+        setTotalStories(nbpages);
       } catch (err) {
       } finally {
         setIsLoading(false);
@@ -28,13 +29,13 @@ function NewsPage() {
 
   return (
     <div className="container">
-      <h1>Hacker News</h1>
+      <h1>Latest Stories</h1>
       <div className="news-container">
         {isLoading ? (
           <p>is Loading....</p>
         ) : (
-          articles.map((article) => (
-            <NewsCard article={article} key={article.objectID} />
+          stories.map((storie) => (
+            <LastStories storie={storie} key={storie.objectID} />
           ))
         )}
       </div>
@@ -42,5 +43,4 @@ function NewsPage() {
   );
 }
 
-
-export default NewsPage;
+export default LastStories;
